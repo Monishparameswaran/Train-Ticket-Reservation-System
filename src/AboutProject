@@ -1,0 +1,68 @@
+
+
+Book:
+    There are going to be 63 berths ,16 RAC tickets RAC means like a seater,10 tickets for the waiting list,if the waiting
+    ticket count goes above the 10 ,print that there are no tickets available ,
+      details to get from the passengers:
+        1. Name
+        2. Age
+        3. Gender
+        4. Berth Preference
+     The tickets should not be allocated for the childrens below the age of 5,but the data has to be stored,
+     if the female with childrens or Elders are booking the tickets then the booking should start from the lower birth , to
+     give them comfort,eventhough they have given the top berth as the preference
+
+cancelling Conditions
+    RAC means they will travel in the train but may not sleep,
+    so if any ticket has been cancelled from the RAC , then first RAC ticket should move to the Berth Ticket , and a waiting List
+    ticket should be confirmed on to the RAC ticket,like a swap RAC ticket moves to the Berth Ticket,Waiting got confirmed with the
+    RAC
+
+print the booked tickets:
+    print the Tickets with the passenger details including the notifications that they recieved during seat changes
+
+Print the available tickets:
+    Print the unoccupied tickets
+
+
+
+interfaces:                      class
+
+BookingService              -> TicketBooking
+  - bookTicket(Passenger p)
+  - isBookingAvailable()
+
+CancellationService         -> TicketCancellation
+  - cancel( int passenger id)
+
+PrintingService             -> TicketPrinter
+  - print( int id)
+
+SingleTon
+ReservationSystem
+  -BookingService get from Bookingfactory (getBookingFactory(type)) , type = train,but if type is Flight,then this can act as flight ticket reservation system
+  -CancellationService get from  Cancellation-- > upon cancellation the waiting user should get notified,so uses Observer design Pattern
+  -PrintingService  get from PrintingServiceFactory
+  -printAvailableTicketsFactory
+
+  so here i felt there are lot of factories ,so i decided to move for the AbstractFactory to get the factory to create this factory.
+  the intuition is simple,if i want BookingService , it can be Train or flight or Bus, again for Cancellation, it can be train,flight,bus..
+  to here its most suitable and flexible to go for the Abstract Factory design pattern.
+   to get the factory, as using TrainReservationFactory give all the family of related objects. as using FlightReservation
+
+  +bookTicket( Passenger p)
+  +cancelTicket( int passengerID )
+  +printBooked()
+  +printAvailableTickets()
+
+
+Main class should get the input ,with the instance of reservation system,it should book the tickets,
+
+Notification System
+
+interface                  class
+NotificationService       NotificationSystem
+PassengerObserver         Passenger
+ - update()
+ -upon canceling the tickets, the respective passenger gets Notification
+ -passengers in the RAC and waiting who got changed with their ticket status got the status update logic
